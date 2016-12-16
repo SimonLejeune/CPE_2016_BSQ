@@ -5,7 +5,7 @@
 ** Login   <slejeune@epitech.net>
 ** 
 ** Started on  Mon Dec 12 10:55:47 2016 Simon LEJEUNE
-** Last update Wed Dec 14 09:55:59 2016 Simon LEJEUNE
+** Last update Fri Dec 16 13:06:41 2016 LEJEUNE Simon
 */
 
 #include <stdlib.h>
@@ -13,35 +13,48 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include "my.h"
+
+int	jumping(char *str)
+{
+  int	x;
+
+  x = 0;
+  while (str[x] != '\n')
+    x++;
+  x++;
+  return (x);
+}
+
+char	*first_number(char *str)
+{
+  int	x;
+
+  x = 0;
+  while(str[x] != '\n')
+    x++;
+  return(str);
+}
 
 char	*reading(char *filepath)
 {
   int	fd;
   int	x;
-  int	nb_n;
+  int	nb_l;
   char	*buff;
-  struct stat sb;
+  struct stat st;
 
-  x = 0;
+  nb_l = 0;
   fd = open(filepath, O_RDONLY);
-  stat(filepath, &sb);
-  buff = malloc(sizeof(char) * (sb.st_size));
-  read(fd, buff, sb.st_size);
-  while (buff[x] != '\0')
+  stat(filepath, &st);
+  buff = malloc(sizeof(char*) * (st.st_size));
+  read(fd, buff, st.st_size);
+  x = jumping(buff);
+  while(buff[x] != '\0')
     {
-      if (buff[x] == '\n')
-	nb_n++;
+      write(1, &buff[x], 1);
       x++;
     }
-  x--;
-  write(1, buff, sb.st_size);
   close(fd);
   return (buff);
-}
-
-void	main(int ac, char **av)
-{
-  char	*buff;
-  
-  buff = reading(av[1]);
 }

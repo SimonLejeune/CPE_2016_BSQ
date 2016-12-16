@@ -5,15 +5,18 @@
 ## Login   <slejeune@epitech.net>
 ## 
 ## Started on  Mon Dec 12 10:51:35 2016 Simon LEJEUNE
-## Last update Mon Dec 12 11:54:04 2016 Simon LEJEUNE
+## Last update Fri Dec 16 10:51:33 2016 LEJEUNE Simon
 ##
 
 SRC	=	src/functions.c \
-		src/read.c
+		src/read.c	\
+		src/main.c
 
 OBJ	=	$(SRC:.c=.o)
 
 NAME	=	bsq
+
+CFLAGS	=	-Iinclude
 
 all	:	$(NAME)
 
