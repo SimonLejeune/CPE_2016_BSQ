@@ -5,7 +5,7 @@
 ** Login   <slejeune@epitech.net>
 ** 
 ** Started on  Mon Dec 12 10:55:47 2016 Simon LEJEUNE
-** Last update Fri Dec 16 13:06:41 2016 LEJEUNE Simon
+** Last update Sun Dec 18 20:20:12 2016 LEJEUNE Simon
 */
 
 #include <stdlib.h>
@@ -26,31 +26,63 @@ int	jumping(char *str)
   return (x);
 }
 
-char	*first_number(char *str)
+int	nb_line(char *map, int fd)
 {
-  int	x;
+  int	nb_line;
+  int	i;
 
-  x = 0;
-  while(str[x] != '\n')
-    x++;
-  return(str);
+  struct stat st;
+
+  nb_line = 0;
+  stat(map, &st);
+  read(fd, map, 4096);
+  i = jumping(map);
+  map[i] = '\0';
+  while (map[i] != '\0')
+    {
+      nb_line++;
+      i++;
+    }
+  return (nb_line);
+}
+
+int	nb_column(char *map, int fd)
+{
+  int	nb_column;
+  int	i;
+
+  struct stat st;
+
+  nb_column = 0;
+  stat(map, &st);
+  read(fd, map, 4096);
+  i = jumping(map);
+  map[i] = '\0';
+  while (map[i] != '\n')
+    {
+      nb_column++;
+      i++;
+    }
+  return (nb_column);
 }
 
 char	*reading(char *filepath)
 {
   int	fd;
   int	x;
-  int	nb_l;
+  int	row;
+  int	col;
+  int	size;
   char	*buff;
-  struct stat st;
 
-  nb_l = 0;
   fd = open(filepath, O_RDONLY);
-  stat(filepath, &st);
-  buff = malloc(sizeof(char*) * (st.st_size));
-  read(fd, buff, st.st_size);
+  row = nb_line(filepath, fd);
+  col = nb_column(filepath, fd);
+  size = row * col;
+  buff = malloc(sizeof(char*) * size);
+  read(fd, buff, size);
   x = jumping(buff);
-  while(buff[x] != '\0')
+  while (buff[x] != '\0')
     {
       write(1, &buff[x], 1);
       x++;
